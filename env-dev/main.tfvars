@@ -32,15 +32,15 @@ app_instances = {
     instance_type = "t2.micro"
   }
   shipping = {
-    app_port = 6379
+    app_port = 8080
     instance_type = "t2.micro"
   }
   cart = {
-    app_port = 5672
+    app_port = 8080
     instance_type = "t2.micro"
   }
   payment = {
-    app_port = 5672
+    app_port = 8080
     instance_type = "t2.micro"
   }
 }
