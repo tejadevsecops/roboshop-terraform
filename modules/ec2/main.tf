@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.54.1"
+    }
+  }
+}
 resource "aws_security_group" "sg" {
   name        = "${var.component_name}-${var.env}-sg"
   description = "Inbound allow for ${var.component_name}"
@@ -32,4 +40,28 @@ resource "aws_instance" "instance" {
   tags = {
     Name = "${var.component_name}-${var.env}"
   }
+}
+
+resource "null_resource" "ansible-pull" {
+  provisioner "remote-exec" {
+    connection {
+      type = "ssh"
+      user = "ec2-user"
+      password = "DevOps321"
+      host = aws_instance.instance.private_ip
+    }
+
+    inline = [
+      "sudo labauto ansible",
+      "ansible-pull -i localhost, -U https://github.com/Theja727/roboshop-terraform roboshop.yml -e env=${var.env} -e app_name=${var.component_name}"
+    ]
+  }
+}
+
+resource "aws_route53_record" "record" {
+  zone_id =  var.zone_id
+  name    = "${var.component_name}-${var.env}.${var.domain_name}"
+  type    = "A"
+  ttl     = "30"
+  records = [aws_instance.instance.private_ip]
 }
