@@ -7,6 +7,7 @@ module "db_instances" {
   component_name = each.key
   zone_id = var.zone_id
   domain_name = var.domain_name
+  vault_token = var.vault_token
 }
 
 module "app_instances" {
@@ -19,6 +20,7 @@ module "app_instances" {
   component_name = each.key
   zone_id = var.zone_id
   domain_name = var.domain_name
+  vault_token = var.vault_token
 }
 
 module "web_instances" {
@@ -31,4 +33,5 @@ module "web_instances" {
   component_name = each.key
   zone_id = var.zone_id
   domain_name = var.domain_name
+  vault_token = var.vault_token
 }
