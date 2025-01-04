@@ -46,8 +46,8 @@ resource "null_resource" "ansible-pull" {
   provisioner "remote-exec" {
     connection {
       type = "ssh"
-      user = "ec2-user"
-      password = "DevOps321"
+      user = data.vault_generic_secret.ssh.data["username"]
+      password = data.vault_generic_secret.ssh.data["password"]
       host = aws_instance.instance.private_ip
     }
 
