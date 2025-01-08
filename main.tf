@@ -8,6 +8,7 @@ module "db_instances" {
   zone_id = var.zone_id
   domain_name = var.domain_name
   vault_token = var.vault_token
+  volume_size = each.value["volume_size"]
 }
 
 module "app_instances" {
@@ -21,6 +22,7 @@ module "app_instances" {
   zone_id = var.zone_id
   domain_name = var.domain_name
   vault_token = var.vault_token
+  volume_size = each.value["volume_size"]
 }
 
 module "web_instances" {
@@ -34,4 +36,5 @@ module "web_instances" {
   zone_id = var.zone_id
   domain_name = var.domain_name
   vault_token = var.vault_token
+  volume_size = each.value["volume_size"]
 }
