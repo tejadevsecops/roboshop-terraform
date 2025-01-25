@@ -71,5 +71,15 @@ eks = {
   subnet_ids = ["subnet-0f4396c6f64a29f1d", "subnet-00cbe417ef8fb7f59"]
   addons = {
     vpc-cni = {}
+    kube-proxy = {}
+  }
+  node_groups = {
+    g1 = {
+      desired_size = 1
+      max_size     = 2
+      min_size     = 1
+      capacity_type = "SPOT"
+      instance_types = ["t3.large"]
+    }
   }
 }
