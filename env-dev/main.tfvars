@@ -71,6 +71,7 @@ eks = {
   subnet_ids = ["subnet-0f4396c6f64a29f1d", "subnet-00cbe417ef8fb7f59"]
   addons = {
     vpc-cni = {}
+
     kube-proxy = {}
   }
   node_groups = {
@@ -80,6 +81,15 @@ eks = {
       min_size     = 1
       capacity_type = "SPOT"
       instance_types = ["t3.large"]
+    }
+  }
+  access_entries = {
+    workstation = {
+      principal_arn = "arn:aws:iam::021891599381:role/workstation-role"
+      kubernetes_groups = []
+      policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+      access_scope_type = "cluster"
+      access_scope_namespaces = []
     }
   }
 }
