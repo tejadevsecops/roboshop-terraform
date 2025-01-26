@@ -91,5 +91,12 @@ eks = {
       access_scope_type = "cluster"
       access_scope_namespaces = []
     }
+    ui = {
+      principal_arn = "arn:aws:iam::021891599381:root"
+      kubernetes_groups = []
+      policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+      access_scope_type = "cluster"
+      access_scope_namespaces = []
+    }
   }
 }
