@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    null = {
+      source  = "hashicorp/null"
+      version = "3.2.2"
+    }
+  }
+}
 resource "aws_eks_cluster" "main" {
   name     = "${var.env}-eks"
   role_arn = aws_iam_role.eks-cluster-role.arn
@@ -48,5 +56,17 @@ resource "aws_eks_node_group" "main" {
     desired_size = each.value["desired_size"]
     max_size     = each.value["max_size"]
     min_size     = each.value["min_size"]
+  }
+}
+
+
+## ArgoCD Setup
+resource "null_resource" "argocd" {
+  provisioner "local-exec" {
+    command = <<EOF
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl patch svc argocd-server -p '{"spec": {"ports": [{"port": 443,"targetPort": 8080,"name": "https"},{"port": 80,"targetPort": 8080,"name": "http"}],"type": "LoadBalancer"}}' -n argocd
+  EOF
   }
 }
