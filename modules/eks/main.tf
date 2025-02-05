@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    null = {
-      source  = "hashicorp/null"
-      version = "3.2.2"
-    }
-  }
-}
 resource "aws_eks_cluster" "main" {
   name     = "${var.env}-eks"
   role_arn = aws_iam_role.eks-cluster-role.arn
