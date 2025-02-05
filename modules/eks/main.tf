@@ -60,14 +60,14 @@ resource "aws_eks_node_group" "main" {
 }
 
 
-## ArgoCD Setup
-resource "null_resource" "argocd" {
-  provisioner "local-exec" {
-    command = <<EOF
-aws eks update-kubeconfig --name ${var.env}-eks
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-kubectl patch svc argocd-server -p '{"spec": {"ports": [{"port": 443,"targetPort": 8080,"name": "https"},{"port": 80,"targetPort": 8080,"name": "http"}],"type": "LoadBalancer"}}' -n argocd
-  EOF
-  }
-}
+# ## ArgoCD Setup
+# resource "null_resource" "argocd" {
+#   provisioner "local-exec" {
+#     command = <<EOF
+# aws eks update-kubeconfig --name ${var.env}-eks
+# kubectl create namespace argocd
+# kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+# kubectl patch svc argocd-server -p '{"spec": {"ports": [{"port": 443,"targetPort": 8080,"name": "https"},{"port": 80,"targetPort": 8080,"name": "http"}],"type": "LoadBalancer"}}' -n argocd
+#   EOF
+#   }
+# }
