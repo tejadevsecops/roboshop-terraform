@@ -73,6 +73,7 @@ eks = {
     vpc-cni = {}
     coredns = {}
     kube-proxy = {}
+    eks-pod-identity-agent = {}
   }
   node_groups = {
     g1 = {
