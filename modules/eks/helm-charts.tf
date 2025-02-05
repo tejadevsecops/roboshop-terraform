@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    helm = {
-      source  = "hashicorp/helm"
-      version = "2.14.0"
-    }
-  }
-}
 resource "null_resource" "kube-bootstrap" {
   provisioner "local-exec" {
     command = <<EOF
