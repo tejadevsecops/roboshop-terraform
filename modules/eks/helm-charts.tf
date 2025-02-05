@@ -43,4 +43,3 @@ resource "helm_release" "argocd" {
     file("${path.module}/helm-config/argocd.yml")
   ]
 }
-}
