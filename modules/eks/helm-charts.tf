@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    helm = {
+      source  = "hashicorp/helm"
+      version = "2.14.0"
+    }
+  }
+}
 resource "null_resource" "kube-bootstrap" {
   provisioner "local-exec" {
     command = <<EOF
@@ -17,4 +25,22 @@ resource "helm_release" "nginx-ingress" {
   values = [
     file("${path.module}/helm-config/nginx-ingress.yml")
   ]
+}
+
+resource "helm_release" "argocd" {
+  depends_on = [null_resource.kube-bootstrap]
+  name             = "argocd"
+  repository       = "https://argoproj.github.io/argo-helm"
+  chart            = "argo-cd"
+  namespace        = "argocd"
+  create_namespace = true
+  wait             = false
+  set {
+    name  = "global.domain"
+    value = "argocd-${var.env}.tejadevopsb81.icu"
+  }
+  values = [
+    file("${path.module}/helm-config/argocd.yml")
+  ]
+}
 }
