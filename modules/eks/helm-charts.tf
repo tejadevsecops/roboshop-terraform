@@ -64,3 +64,15 @@ resource "helm_release" "prom-stack" {
     file("${path.module}/helm-config/prom-stack.yml")
   ]
 }
+
+
+## External Secrets
+resource "helm_release" "external-secrets" {
+  depends_on = [null_resource.kube-bootstrap]
+  name             = "external-secrets"
+  repository       = "https://charts.external-secrets.io"
+  chart            = "external-secrets"
+  namespace        = "devops"
+  create_namespace = true
+  wait             = false
+}
