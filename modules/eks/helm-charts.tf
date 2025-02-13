@@ -87,7 +87,7 @@ kind: Secret
 metadata:
   name: vault-token
 data:
-  token: aHZzLkRvemJYWHdKYmVrbVpnYnB2UnZ5U1U2OQ==
+  token: aHZzLjg2M3dBNUpmQ09uMWM1dkNIZUZUTXlEUA==
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ClusterSecretStore
