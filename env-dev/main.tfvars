@@ -1,6 +1,6 @@
 env = "dev"
 domain_name = "tejadevopsb81.icu"
-zone_id = "Z06372633BKYPXSU4MUBQ"
+zone_id = "Z10165773L4FEVYHDJOSY"
 
 db_instances = {
   mongodb = {
@@ -68,7 +68,7 @@ web_instances = {
 }
 
 eks = {
-  subnet_ids = ["subnet-0f4396c6f64a29f1d", "subnet-00cbe417ef8fb7f59"]
+  subnet_ids = ["subnet-036dd35a72f69e262", "subnet-00d1b598b3d5c3dd9"]
   addons = {
     vpc-cni = {}
 #    coredns = {}
@@ -86,14 +86,14 @@ eks = {
   }
   access_entries = {
     workstation = {
-      principal_arn = "arn:aws:iam::021891599381:role/workstation-role"
+      principal_arn = "arn:aws:iam::418272784676:role/workstation-role"
       kubernetes_groups = []
       policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
       access_scope_type = "cluster"
       access_scope_namespaces = []
     }
     ui = {
-      principal_arn = "arn:aws:iam::021891599381:root"
+      principal_arn = "arn:aws:iam::418272784676:root"
       kubernetes_groups = []
       policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
       access_scope_type = "cluster"
