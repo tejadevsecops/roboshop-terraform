@@ -115,3 +115,9 @@ vpc = {
     }
   }
 }
+
+default_vpc = {
+  id = "vpc-0012cd57b4b34600a"
+  cidr = "172.31.0.0/16"
+  route_table = "rtb-06f0adc3685afd5eb"
+}

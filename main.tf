@@ -4,6 +4,7 @@ module "vpc" {
   subnets = each.value["subnets"]
   source = "./modules/vpc"
   cidr_block = each.value["cidr_block"]
+  default_vpc = var.default_vpc
 }
 
 # module "db_instances" {
