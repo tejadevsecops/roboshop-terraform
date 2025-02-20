@@ -20,6 +20,7 @@ resource "aws_subnet" "main" {
   availability_zone = each.value["az"]
   tags = {
     Name = "${var.env}-${each.key}"
+    subnet_group = each.value["subnet_group"]
   }
 }
 
