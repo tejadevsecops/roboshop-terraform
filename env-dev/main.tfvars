@@ -106,10 +106,10 @@ vpc = {
   main = {
     cidr_block = "10.0.0.0/24"
     subnets = {
-      one = {
+      public = {
         cidr_block = "10.0.0.0/25"
       }
-      two = {
+      private = {
         cidr_block = "10.0.0.128/25"
       }
     }
