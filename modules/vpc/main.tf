@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "5.54.1"
-    }
-  }
-}
 resource "aws_vpc" "main" {
   cidr_block = var.cidr_block
   tags = {
@@ -38,4 +30,22 @@ resource "aws_route" "default-vpc-route-table" {
   route_table_id = var.default_vpc["route_table"]
   destination_cidr_block = var.cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.main.id
+}
+
+resource "aws_security_group" "test" {
+  name = "test"
+  vpc_id = aws_vpc.main.id
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "test" {
+  ami = "ami-0ed79e09b5c35fc77"
+  instance_type = "t3.small"
+  vpc_security_group_ids = [aws_security_group.test.id]
+  subnet_id = aws_subnet.subnet["one"].id
 }
