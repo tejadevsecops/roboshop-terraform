@@ -56,3 +56,8 @@ module "vpc" {
 #   node_groups = var.eks["node_groups"]
 #   access_entries = var.eks["access_entries"]
 # }
+
+
+output "vpc" {
+  value = module.vpc
+}
