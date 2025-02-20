@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.54.1"
+    }
+  }
+}
 resource "aws_vpc" "main" {
   cidr_block = var.cidr_block
   tags = {
@@ -61,6 +69,27 @@ resource "aws_route_table_association" "main" {
   route_table_id = aws_route_table.main[each.key].id
 }
 
+resource "aws_eip" "igw" {
+  domain = "vpc"
+  tags = {
+    Name = "${var.env}-ngw"
+  }
+}
+
+resource "aws_nat_gateway" "main" {
+  allocation_id = aws_eip.igw.id
+  subnet_id = aws_subnet.main["public"].id
+  tags = {
+    Name = "${var.env}-ngw"
+  }
+}
+
+resource "aws_route" "ngw" {
+  route_table_id = aws_route_table.main["private"].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id = aws_nat_gateway.main.id
+}
+
 resource "aws_security_group" "test" {
   name = "test"
   vpc_id = aws_vpc.main.id
@@ -78,9 +107,9 @@ resource "aws_security_group" "test" {
   }
 }
 
-# resource "aws_instance" "test" {
-#   ami = "ami-0ed79e09b5c35fc77"
-#   instance_type = "t3.small"
-#   vpc_security_group_ids = [aws_security_group.test.id]
-#   subnet_id = aws_subnet.main["one"].id
-# }
+resource "aws_instance" "test" {
+  ami = "ami-0ed79e09b5c35fc77"
+  instance_type = "t3.small"
+  vpc_security_group_ids = [aws_security_group.test.id]
+  subnet_id = aws_subnet.main["private"].id
+}
