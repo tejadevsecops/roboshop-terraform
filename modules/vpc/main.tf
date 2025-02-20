@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.54.1"
+    }
+  }
+}
 resource "aws_vpc" "main" {
   cidr_block = var.cidr_block
   tags = {
@@ -14,6 +22,14 @@ resource "aws_subnet" "subnet" {
   }
 }
 
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "${var.env}-igw"
+  }
+}
+
 resource "aws_vpc_peering_connection" "main" {
   peer_vpc_id = var.default_vpc["id"]
   vpc_id      = aws_vpc.main.id
@@ -24,6 +40,12 @@ resource "aws_route" "main" {
   route_table_id = aws_vpc.main.default_route_table_id
   destination_cidr_block = var.default_vpc["cidr"]
   vpc_peering_connection_id = aws_vpc_peering_connection.main.id
+}
+
+resource "aws_route" "igw" {
+  route_table_id = aws_vpc.main.default_route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = aws_internet_gateway.main.id
 }
 
 resource "aws_route" "default-vpc-route-table" {
