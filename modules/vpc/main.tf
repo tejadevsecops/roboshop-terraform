@@ -63,6 +63,12 @@ resource "aws_security_group" "test" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_instance" "test" {
@@ -70,4 +76,5 @@ resource "aws_instance" "test" {
   instance_type = "t3.small"
   vpc_security_group_ids = [aws_security_group.test.id]
   subnet_id = aws_subnet.subnet["one"].id
+  associate_public_ip_address = true
 }
