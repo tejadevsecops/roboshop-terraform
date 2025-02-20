@@ -7,21 +7,21 @@ module "vpc" {
   default_vpc = var.default_vpc
 }
 
-# module "db_instances" {
-#   for_each = var.db_instances
-#   source = "./modules/ec2"
-#   env = var.env
-#   instance_type = each.value["instance_type"]
-#   app_port = each.value["app_port"]
-#   component_name = each.key
-#   zone_id = var.zone_id
-#   domain_name = var.domain_name
-#   vault_token = var.vault_token
-#   volume_size = each.value["volume_size"]
-#   vpc_id         = lookup(lookup(module.vpc, "main", null), "vpc_id", null)
-#   subnet_id   = lookup(lookup(lookup(lookup(module.vpc, "main", null), "subnets", null), "db-subnet-1", null), "id", null)
-#   #subnet_id  = module.vpc.db_subnets[0]
-# }
+module "db_instances" {
+  for_each = var.db_instances
+  source = "./modules/ec2"
+  env = var.env
+  instance_type = each.value["instance_type"]
+  app_port = each.value["app_port"]
+  component_name = each.key
+  zone_id = var.zone_id
+  domain_name = var.domain_name
+  vault_token = var.vault_token
+  volume_size = each.value["volume_size"]
+  vpc_id      = lookup(lookup(module.vpc, "main", null), "vpc_id", null)
+  subnet_id   = lookup(lookup(lookup(lookup(module.vpc, "main", null), "subnets", null), "db-subnet-1", null), "id", null)
+  #subnet_id  = module.vpc.db_subnets[0]
+}
 
 # module "app_instances" {
 #   depends_on = [module.db_instances]
