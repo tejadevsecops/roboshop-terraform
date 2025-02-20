@@ -12,6 +12,7 @@ module "db_instances" {
   source = "./modules/ec2"
   env = var.env
   instance_type = each.value["instance_type"]
+  allow_cidr = each.value["allow_cidr"]
   app_port = each.value["app_port"]
   component_name = each.key
   zone_id = var.zone_id
