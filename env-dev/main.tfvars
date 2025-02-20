@@ -73,7 +73,7 @@ web_instances = {
 }
 
 eks = {
-  subnet_ids = ["subnet-036dd35a72f69e262", "subnet-00d1b598b3d5c3dd9"]
+  # subnet_ids = ["subnet-036dd35a72f69e262", "subnet-00d1b598b3d5c3dd9"]
   addons = {
     vpc-cni = {}
 #    coredns = {}
