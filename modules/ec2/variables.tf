@@ -7,3 +7,4 @@ variable "zone_id" {}
 variable "vault_token" {}
 variable "volume_size" {}
 variable "subnet_id" {}
+variable "vpc_id" {}
