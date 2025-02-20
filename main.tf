@@ -21,6 +21,7 @@ module "db_instances" {
   vpc_id      = lookup(lookup(module.vpc, "main", null), "vpc_id", null)
   subnet_id   = lookup(lookup(lookup(lookup(module.vpc, "main", null), "subnets", null), "db-subnet-1", null), "id", null)
   #subnet_id  = module.vpc.db_subnets[0]
+  bastion_nodes = var.bastion_nodes
 }
 
 # module "app_instances" {
