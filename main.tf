@@ -63,6 +63,7 @@ module "eks" {
   access_entries = var.eks["access_entries"]
   vpc_id      = lookup(lookup(module.vpc, "main", null), "vpc_id", null)
   subnet_ids   = lookup(lookup(module.vpc, "main", null), "app_subnets", null)
+  kms_key_id = var.kms_key_id
 }
 
 

@@ -52,10 +52,34 @@ resource "aws_eks_node_group" "main" {
   subnet_ids      = var.subnet_ids
   capacity_type = each.value["capacity_type"]
   instance_types = each.value["instance_types"]
+
+  launch_template {
+    name    = aws_launch_template.main[each.key].name
+    version = "$Latest"
+  }
+
   scaling_config {
     desired_size = each.value["desired_size"]
     max_size     = each.value["max_size"]
     min_size     = each.value["min_size"]
+  }
+}
+
+resource "aws_launch_template" "main" {
+  for_each = var.node_groups
+  name     = "${each.key}-al"
+
+  block_device_mappings {
+    device_name = "/dev/xvda"
+    ebs {
+      volume_size = 30
+      encrypted   = true
+      kms_key_id  = var.kms_key_id
+    }
+  }
+
+  tags = {
+    Name = each.key
   }
 }
 

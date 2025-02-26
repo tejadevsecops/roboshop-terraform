@@ -82,7 +82,7 @@ eks = {
     eks-pod-identity-agent = {}
   }
   node_groups = {
-    g1 = {
+    ngone = {
       desired_size = 2
       max_size     = 5
       min_size     = 2

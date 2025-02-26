@@ -4,3 +4,4 @@ variable "addons" {}
 variable "node_groups" {}
 variable "access_entries" {}
 variable "vpc_id" {}
+variable "kms_key_id" {}
