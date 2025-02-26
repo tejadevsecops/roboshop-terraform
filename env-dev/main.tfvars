@@ -1,7 +1,7 @@
 env = "dev"
 domain_name = "tejadevopsb81.icu"
 zone_id = "Z10165773L4FEVYHDJOSY"
-bastion_nodes = ["172.31.47.208/32", "172.31.42.4/32"]
+bastion_nodes = ["172.31.47.208/32", "172.31.40.251/32"]
 
 db_instances = {
   mongodb = {
