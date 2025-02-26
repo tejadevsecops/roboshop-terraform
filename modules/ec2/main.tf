@@ -43,6 +43,8 @@ resource "aws_instance" "instance" {
   }
   root_block_device {
     volume_size = var.volume_size
+    encrypted = true
+    kms_key_id = var.kms_key_id
   }
 
   lifecycle {

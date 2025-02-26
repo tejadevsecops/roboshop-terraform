@@ -23,6 +23,7 @@ module "db_instances" {
   subnet_id   = lookup(lookup(lookup(lookup(module.vpc, "main", null), "subnets", null), "db-subnet-1", null), "id", null)
   #subnet_id  = module.vpc.db_subnets[0]
   bastion_nodes = var.bastion_nodes
+  kms_key_id = var.kms_key_id
 }
 
 # module "app_instances" {
