@@ -5,5 +5,5 @@ data "aws_ami" "ami" {
 }
 
 data "vault_generic_secret" "ssh" {
-  path = "infra-secrets/ssh"
+  path = "infra_secrets/ssh"
 }
