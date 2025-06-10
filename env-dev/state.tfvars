@@ -1,3 +1,3 @@
-bucket = "tfstate-devsecops-b81"
+bucket = "tejadevsecopsb81"
 key = "dev/terraform.tfstate"
 region = "us-east-1"

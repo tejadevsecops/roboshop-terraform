@@ -1,80 +1,163 @@
+# terraform {
+#   required_providers {
+#     aws = {
+#       source  = "hashicorp/aws"
+#       version = "5.54.1"
+#     }
+#   }
+# }
+# resource "aws_security_group" "sg" {
+#   name        = "${var.component_name}-${var.env}-sg"
+#   description = "Inbound allow for ${var.component_name}"
+#   vpc_id = var.vpc_id
+#   ingress {
+#     from_port   = 22
+#     to_port     = 22
+#     protocol    = "TCP"
+#     cidr_blocks = var.bastion_nodes
+#   }
+#
+#   ingress {
+#     from_port   = var.app_port
+#     to_port     = var.app_port
+#     protocol    = "TCP"
+#     cidr_blocks = var.allow_cidr
+#   }
+#
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+# }
+#
+#
+# resource "aws_instance" "instance" {
+#   ami           = data.aws_ami.ami.id
+#   instance_type = var.instance_type
+#   vpc_security_group_ids = [aws_security_group.sg.id]
+#   subnet_id = var.subnet_id
+#   tags = {
+#     Name = "${var.component_name}-${var.env}"
+#   }
+#   root_block_device {
+#     volume_size = var.volume_size
+#     encrypted = true
+#     kms_key_id = var.kms_key_id
+#   }
+#
+#   lifecycle {
+#     ignore_changes = [ami, ]
+#   }
+# }
+#
+# resource "null_resource" "ansible-pull" {
+#
+#   triggers = {
+#     instance_id = aws_instance.instance.id
+#   }
+#   provisioner "remote-exec" {
+#     connection {
+#       type = "ssh"
+#       user = data.vault_generic_secret.ssh.data["username"]
+#       password = data.vault_generic_secret.ssh.data["password"]
+#       host = aws_instance.instance.private_ip
+#     }
+#
+#     inline = [
+#       "ansible-pull -i localhost, -U https://github.com/Theja727/roboshop-ansible roboshop.yml -e env=${var.env} -e component=${var.component_name} -e vault_token=${var.vault_token}"
+#     ]
+#   }
+# }
+#
+# resource "aws_route53_record" "record" {
+#   zone_id =  var.zone_id
+#   name    = "${var.component_name}-${var.env}.${var.domain_name}"
+#   type    = "A"
+#   ttl     = "30"
+#   records = [aws_instance.instance.private_ip]
+# }
+
+
+
+
 terraform {
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "5.54.1"
+    null = {
+      source  = "hashicorp/null"
+      version = "3.2.2"
     }
   }
 }
 resource "aws_security_group" "sg" {
   name        = "${var.component_name}-${var.env}-sg"
-  description = "Inbound allow for ${var.component_name}"
-  vpc_id = var.vpc_id
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "TCP"
-    cidr_blocks = var.bastion_nodes
-  }
+  description = "Inbound allow traffic for ${var.component_name}"
 
   ingress {
-    from_port   = var.app_port
-    to_port     = var.app_port
-    protocol    = "TCP"
-    cidr_blocks = var.allow_cidr
+    from_port        = 22
+    to_port          = 22
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port        = var.app_port
+    to_port          = var.app_port
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
   }
 }
 
 
+
+
 resource "aws_instance" "instance" {
-  ami           = data.aws_ami.ami.id
+  ami = data.aws_ami.ami.id
   instance_type = var.instance_type
   vpc_security_group_ids = [aws_security_group.sg.id]
-  subnet_id = var.subnet_id
   tags = {
     Name = "${var.component_name}-${var.env}"
   }
   root_block_device {
     volume_size = var.volume_size
-    encrypted = true
-    kms_key_id = var.kms_key_id
+  }
+  lifecycle {
+    ignore_changes = [ami,]
   }
 
-  lifecycle {
-    ignore_changes = [ami, ]
-  }
 }
 
-resource "null_resource" "ansible-pull" {
-
+resource "null_resource" "ansible_pull" {
   triggers = {
     instance_id = aws_instance.instance.id
   }
   provisioner "remote-exec" {
     connection {
-      type = "ssh"
-      user = data.vault_generic_secret.ssh.data["username"]
+      type     = "ssh"
+      user     = data.vault_generic_secret.ssh.data["username"]
       password = data.vault_generic_secret.ssh.data["password"]
-      host = aws_instance.instance.private_ip
+      host     = aws_instance.instance.private_ip
     }
 
     inline = [
       "ansible-pull -i localhost, -U https://github.com/Theja727/roboshop-ansible roboshop.yml -e env=${var.env} -e component=${var.component_name} -e vault_token=${var.vault_token}"
     ]
   }
+
 }
 
 resource "aws_route53_record" "record" {
-  zone_id =  var.zone_id
+  zone_id = var.zone_id
   name    = "${var.component_name}-${var.env}.${var.domain_name}"
   type    = "A"
-  ttl     = "30"
+  ttl     = 30
   records = [aws_instance.instance.private_ip]
 }
+
