@@ -32,82 +32,82 @@ db_instances = {
 }
 
 
-app_instances = {
-  catalogue = {
-    app_port = 8080
-    instance_type = "t2.micro"
-    volume_size = 30
-  }
-  user = {
-    app_port = 8080
-    instance_type = "t2.micro"
-    volume_size = 30
-  }
-  shipping = {
-    app_port = 8080
-    instance_type = "t2.micro"
-    volume_size = 30
-  }
-  cart = {
-    app_port = 8080
-    instance_type = "t2.micro"
-    volume_size = 30
-  }
-  payment = {
-    app_port = 8080
-    instance_type = "t2.micro"
-    volume_size = 30
-  }
-  # dispatch = {
-  #   app_port = 8080
-  #   instance_type = "t2.micro"
-  #   volume_size = 30
-  # }
-}
-
-web_instances = {
-  frontend = {
-    app_port = 80
-    instance_type = "t2.micro"
-    volume_size = 20
-  }
-}
-
-# eks = {
-#   # subnet_ids = ["subnet-036dd35a72f69e262", "subnet-00d1b598b3d5c3dd9"]
-#   addons = {
-#     vpc-cni = {}
-# #    coredns = {}
-#     kube-proxy = {}
-#     eks-pod-identity-agent = {}
+# app_instances = {
+#   catalogue = {
+#     app_port = 8080
+#     instance_type = "t2.micro"
+#     volume_size = 30
 #   }
-#   node_groups = {
-#     ngone = {
-#       desired_size = 2
-#       max_size     = 5
-#       min_size     = 2
-#       capacity_type = "ON_DEMAND"
-#       instance_types = ["t3.large"]
-#     }
+#   user = {
+#     app_port = 8080
+#     instance_type = "t2.micro"
+#     volume_size = 30
 #   }
-#   access_entries = {
-#     workstation = {
-#       principal_arn = "arn:aws:iam::418272784676:role/workstation-role"
-#       kubernetes_groups = []
-#       policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-#       access_scope_type = "cluster"
-#       access_scope_namespaces = []
-#     }
-#     ui = {
-#       principal_arn = "arn:aws:iam::418272784676:root"
-#       kubernetes_groups = []
-#       policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-#       access_scope_type = "cluster"
-#       access_scope_namespaces = []
-#     }
+#   shipping = {
+#     app_port = 8080
+#     instance_type = "t2.micro"
+#     volume_size = 30
 #   }
+#   cart = {
+#     app_port = 8080
+#     instance_type = "t2.micro"
+#     volume_size = 30
+#   }
+#   payment = {
+#     app_port = 8080
+#     instance_type = "t2.micro"
+#     volume_size = 30
+#   }
+#   # dispatch = {
+#   #   app_port = 8080
+#   #   instance_type = "t2.micro"
+#   #   volume_size = 30
+#   # }
 # }
 #
+# web_instances = {
+#   frontend = {
+#     app_port = 80
+#     instance_type = "t2.micro"
+#     volume_size = 20
+#   }
+# }
+
+eks = {
+   subnet_ids = ["subnet-007e75f81d6e88f14", "subnet-0bedccbf5f1e2b878"]
+  addons = {
+    vpc-cni = {}
+#    coredns = {}
+    kube-proxy = {}
+    eks-pod-identity-agent = {}
+  }
+  node_groups = {
+    ngone = {
+      desired_size = 1
+      max_size     = 2
+      min_size     = 1
+      capacity_type = "SPOT"
+      instance_types = ["t3.large"]
+    }
+  }
+  access_entries = {
+    workstation = {
+      principal_arn = "arn:aws:iam::897782981255:role/Workstation-role"
+      kubernetes_groups = []
+      policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+      access_scope_type = "cluster"
+      access_scope_namespaces = []
+    }
+    ui = {
+      principal_arn = "arn:aws:iam::897782981255:root"
+      kubernetes_groups = []
+      policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+      access_scope_type = "cluster"
+      access_scope_namespaces = []
+    }
+  }
+}
+
 # vpc = {
 #   main = {
 #     cidr_block = "10.0.0.0/24"
@@ -149,8 +149,8 @@ web_instances = {
 #         subnet_group = "app"
 #       }
 #     }
-#   }
-# }
+#  }
+#}
 #
 # default_vpc = {
 #   id = "vpc-0012cd57b4b34600a"
