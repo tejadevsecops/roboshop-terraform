@@ -1,3 +1,6 @@
+global:
+  domain: argocd-dev.tejadevopsb81.icu
+
 configs:
   params:
     server.insecure: true
