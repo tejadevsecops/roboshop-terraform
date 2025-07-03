@@ -25,47 +25,47 @@ module "db_instances" {
   # bastion_nodes = var.bastion_nodes
   # kms_key_id = var.kms_key_id
 }
-
-module "app_instances" {
-  depends_on = [module.db_instances]
-  for_each = var.app_instances
-  source = "./modules/ec2"
-  env = var.env
-  instance_type = each.value["instance_type"]
-  app_port = each.value["app_port"]
-  component_name = each.key
-  zone_id = var.zone_id
-  domain_name = var.domain_name
-  vault_token = var.vault_token
-  volume_size = each.value["volume_size"]
-}
-
-module "web_instances" {
-  depends_on = [module.app_instances]
-  for_each = var.web_instances
-  source = "./modules/ec2"
-  env = var.env
-  instance_type = each.value["instance_type"]
-  app_port = each.value["app_port"]
-  component_name = each.key
-  zone_id = var.zone_id
-  domain_name = var.domain_name
-  vault_token = var.vault_token
-  volume_size = each.value["volume_size"]
-}
-
-# module "eks" {
-#   source = "./modules/eks"
+#
+# module "app_instances" {
+#   depends_on = [module.db_instances]
+#   for_each = var.app_instances
+#   source = "./modules/ec2"
 #   env = var.env
-#   # subnet_ids = var.eks["subnet_ids"]
-#   addons     = var.eks["addons"]
-#   node_groups = var.eks["node_groups"]
-#   access_entries = var.eks["access_entries"]
-#   vpc_id      = lookup(lookup(module.vpc, "main", null), "vpc_id", null)
-#   subnet_ids   = lookup(lookup(module.vpc, "main", null), "app_subnets", null)
-#   kms_key_id = var.kms_key_id
+#   instance_type = each.value["instance_type"]
+#   app_port = each.value["app_port"]
+#   component_name = each.key
+#   zone_id = var.zone_id
+#   domain_name = var.domain_name
+#   vault_token = var.vault_token
+#   volume_size = each.value["volume_size"]
 # }
 #
+# module "web_instances" {
+#   depends_on = [module.app_instances]
+#   for_each = var.web_instances
+#   source = "./modules/ec2"
+#   env = var.env
+#   instance_type = each.value["instance_type"]
+#   app_port = each.value["app_port"]
+#   component_name = each.key
+#   zone_id = var.zone_id
+#   domain_name = var.domain_name
+#   vault_token = var.vault_token
+#   volume_size = each.value["volume_size"]
+# }
+
+module "eks" {
+  source = "./modules/eks"
+  env = var.env
+  subnet_ids = var.eks["subnet_ids"]
+  addons     = var.eks["addons"]
+  node_groups = var.eks["node_groups"]
+  access_entries = var.eks["access_entries"]
+  # vpc_id      = lookup(lookup(module.vpc, "main", null), "vpc_id", null)
+  # subnet_ids   = lookup(lookup(module.vpc, "main", null), "app_subnets", null)
+  # kms_key_id = var.kms_key_id
+}
+
 #
 # output "vpc" {
 #   value = module.vpc

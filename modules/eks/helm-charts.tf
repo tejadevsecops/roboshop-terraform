@@ -51,88 +51,88 @@ resource "helm_release" "argocd" {
   ]
 }
 
-
-## Prometheus Stack Setup
-resource "helm_release" "prom-stack" {
-  depends_on = [null_resource.kube-bootstrap, helm_release.external-dns]
-  name             = "prometheus"
-  repository       = "https://prometheus-community.github.io/helm-charts"
-  chart            = "kube-prometheus-stack"
-  namespace        = "devops"
-  create_namespace = true
-  wait             = false
-  values = [
-    file("${path.module}/helm-config/prom-stack.yml")
-  ]
-}
-
-
-## External Secrets
-resource "helm_release" "external-secrets" {
-  depends_on = [null_resource.kube-bootstrap]
-  name             = "external-secrets"
-  repository       = "https://charts.external-secrets.io"
-  chart            = "external-secrets"
-  namespace        = "devops"
-  create_namespace = true
-  wait             = true
-}
-
-resource "null_resource" "external-secret" {
-  depends_on = [helm_release.external-secrets]
-  provisioner "local-exec" {
-    command = <<EOF
-kubectl apply -f - <<EOK
-apiVersion: v1
-kind: Secret
-metadata:
-  name: vault-token
-data:
-  token: aHZzLjg2M3dBNUpmQ09uMWM1dkNIZUZUTXlEUA==
----
-apiVersion: external-secrets.io/v1beta1
-kind: ClusterSecretStore
-metadata:
-  name: vault-backend
-spec:
-  provider:
-    vault:
-      server: "http://vault-internal.tejadevopsb81.icu:8200"
-      path: "roboshop-${var.env}"
-      version: "v2"
-      auth:
-        tokenSecretRef:
-          name: "vault-token"
-          key: "token"
-EOK
-EOF
-  }
-}
-
-## Filebeat Helm Chart
-resource "helm_release" "filebeat" {
-  depends_on = [null_resource.kube-bootstrap]
-  name       = "filebeat"
-  repository = "https://helm.elastic.co"
-  chart      = "filebeat"
-  namespace  = "kube-system"
-  wait       = "false"
-  values = [
-    file("${path.module}/helm-config/filebeat.yaml")
-  ]
-}
-
-## Cluster Autoscaler
-resource "helm_release" "cluster-autoscaler" {
-  depends_on = [null_resource.kube-bootstrap, helm_release.nginx-ingress]
-  name             = "cluster-autoscaler"
-  repository       = "https://kubernetes.github.io/autoscaler"
-  chart            = "cluster-autoscaler"
-  namespace        = "devops"
-  create_namespace = true
-  wait             = false
-  set {
-    name  = "autoDiscovery.clusterName"
-    value = aws_eks_cluster.main.name
-  }
-}
+#
+# ## Prometheus Stack Setup
+# resource "helm_release" "prom-stack" {
+#   depends_on = [null_resource.kube-bootstrap, helm_release.external-dns]
+#   name             = "prometheus"
+#   repository       = "https://prometheus-community.github.io/helm-charts"
+#   chart            = "kube-prometheus-stack"
+#   namespace        = "devops"
+#   create_namespace = true
+#   wait             = false
+#   values = [
+#     file("${path.module}/helm-config/prom-stack.yml")
+#   ]
+# }
+#
+#
+# ## External Secrets
+# resource "helm_release" "external-secrets" {
+#   depends_on = [null_resource.kube-bootstrap]
+#   name             = "external-secrets"
+#   repository       = "https://charts.external-secrets.io"
+#   chart            = "external-secrets"
+#   namespace        = "devops"
+#   create_namespace = true
+#   wait             = true
+# }
+#
+# resource "null_resource" "external-secret" {
+#   depends_on = [helm_release.external-secrets]
+#   provisioner "local-exec" {
+#     command = <<EOF
+# kubectl apply -f - <<EOK
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: vault-token
+# data:
+#   token: aHZzLjg2M3dBNUpmQ09uMWM1dkNIZUZUTXlEUA==
+# ---
+# apiVersion: external-secrets.io/v1beta1
+# kind: ClusterSecretStore
+# metadata:
+#   name: vault-backend
+# spec:
+#   provider:
+#     vault:
+#       server: "http://vault-internal.tejadevopsb81.icu:8200"
+#       path: "roboshop-${var.env}"
+#       version: "v2"
+#       auth:
+#         tokenSecretRef:
+#           name: "vault-token"
+#           key: "token"
+# EOK
+# EOF
+#   }
+# }
+#
+# ## Filebeat Helm Chart
+# resource "helm_release" "filebeat" {
+#   depends_on = [null_resource.kube-bootstrap]
+#   name       = "filebeat"
+#   repository = "https://helm.elastic.co"
+#   chart      = "filebeat"
+#   namespace  = "kube-system"
+#   wait       = "false"
+#   values = [
+#     file("${path.module}/helm-config/filebeat.yaml")
+#   ]
+# }
+#
+# ## Cluster Autoscaler
+# resource "helm_release" "cluster-autoscaler" {
+#   depends_on = [null_resource.kube-bootstrap, helm_release.nginx-ingress]
+#   name             = "cluster-autoscaler"
+#   repository       = "https://kubernetes.github.io/autoscaler"
+#   chart            = "cluster-autoscaler"
+#   namespace        = "devops"
+#   create_namespace = true
+#   wait             = false
+#   set {
+#     name  = "autoDiscovery.clusterName"
+#     value = aws_eks_cluster.main.name
+#   }
+# }
