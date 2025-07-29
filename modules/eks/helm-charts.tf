@@ -122,7 +122,7 @@ EOF
 #     file("${path.module}/helm-config/filebeat.yaml")
 #   ]
 # }
-#
+
 # ## Cluster Autoscaler
 # resource "helm_release" "cluster-autoscaler" {
 #   depends_on = [null_resource.kube-bootstrap, helm_release.nginx-ingress]
