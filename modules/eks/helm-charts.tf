@@ -67,6 +67,7 @@ resource "helm_release" "argocd" {
 # }
 #
 #
+#
 # ## External Secrets
 resource "helm_release" "external-secrets" {
   depends_on = [null_resource.kube-bootstrap]
