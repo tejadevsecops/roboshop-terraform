@@ -11,6 +11,7 @@ module "vpc-test" {
   for_each = var.vpc_test
   cidr_block = each.value["cidr_block"]
   env = var.env
+  subnets = each.value["subnets"]
   source = "./modules/vpc-test"
 }
 
