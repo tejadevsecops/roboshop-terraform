@@ -10,3 +10,5 @@ variable "eks" {}
 # variable "default_vpc" {}
 # variable "bastion_nodes" {}
 # variable "kms_key_id" {}
+
+variable "vpc_test" {}

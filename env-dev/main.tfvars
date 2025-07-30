@@ -157,3 +157,9 @@ eks = {
 #   cidr = "172.31.0.0/16"
 #   route_table = "rtb-06f0adc3685afd5eb"
 # }
+
+vpc_test = {
+  main = {
+    cidr_block = "10.0.0.0/25"
+  }
+}
