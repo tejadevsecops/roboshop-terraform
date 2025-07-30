@@ -171,3 +171,9 @@ vpc_test = {
     }
   }
 }
+
+default_vpc = {
+  id = "vpc-0cfdf458e468b0109"
+  cidr = "172.31.0.0/16"
+  route_table = "rtb-0f903be29001755cf"
+}

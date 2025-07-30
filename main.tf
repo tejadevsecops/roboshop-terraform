@@ -12,6 +12,7 @@ module "vpc-test" {
   cidr_block = each.value["cidr_block"]
   env = var.env
   subnets = each.value["subnets"]
+  default_vpc = var.default_vpc
   source = "./modules/vpc-test"
 }
 

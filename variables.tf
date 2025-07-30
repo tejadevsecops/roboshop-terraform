@@ -12,3 +12,4 @@ variable "eks" {}
 # variable "kms_key_id" {}
 
 variable "vpc_test" {}
+variable "default_vpc" {}
