@@ -39,3 +39,28 @@ resource "aws_route" "default-vpc-route-table" {
   destination_cidr_block = var.cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.main.id
 }
+
+resource "aws_security_group" "test-sg" {
+  name        = "${var.env}-sg-test"
+  description = "Inbound allow traffic for ${var.env}-sg-test"
+  ingress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "test" {
+  ami = "ami-0375afef3422a73a1"
+  instance_type = "t3.small"
+  security_groups = [aws_security_group.test-sg.id]
+  subnet_id = aws_subnet.subnet["two"].id
+}
