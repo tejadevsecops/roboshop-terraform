@@ -162,11 +162,29 @@ vpc_test = {
   main = {
     cidr_block = "10.0.0.0/24"
     subnets = {
-      one = {
-        cidr_block = "10.0.0.0/25"
+      public-subnet-1 = {
+        cidr_block = "10.0.0.0/27"
+        az = "us-east-1a"
       }
-      two = {
-        cidr_block = "10.0.0.128/25"
+      public-subnet-2 = {
+        cidr_block = "10.0.0.32/27"
+        az = "us-east-1b"
+      }
+      app-subnet-1 = {
+        cidr_block = "10.0.0.128/26"
+        az = "us-east-1a"
+      }
+      app-subnet-2 = {
+        cidr_block = "10.0.0.192/26"
+        az = "us-east-1b"
+      }
+      db-subnet-1 = {
+        cidr_block = "10.0.0.64/27"
+        az = "us-east-1a"
+      }
+      db-subnet-2 = {
+        cidr_block = "10.0.0.96/27"
+        az = "us-east-1b"
       }
     }
   }
