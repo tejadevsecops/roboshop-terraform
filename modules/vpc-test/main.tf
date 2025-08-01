@@ -24,16 +24,17 @@ resource "aws_subnet" "subnet" {
 }
 
 resource "aws_route_table" "main" {
+  for_each = var.subnets
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = "${var.env}-rt"
+    Name = "${var.env}-${each.key}"
   }
 }
 
 resource "aws_route_table_association" "main" {
   for_each = var.subnets
-  route_table_id = aws_route_table.main.id
-  subnet_id = aws_subnet.subnet[each.value].id
+  route_table_id = aws_route_table.main[each.key].id
+  subnet_id = aws_subnet.subnet[each.key].id
 }
 
 # resource "aws_vpc_peering_connection" "main" {
