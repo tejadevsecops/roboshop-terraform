@@ -165,26 +165,32 @@ vpc_test = {
       public-subnet-1 = {
         cidr_block = "10.0.0.0/27"
         az = "us-east-1a"
+        igw = true
       }
       public-subnet-2 = {
         cidr_block = "10.0.0.32/27"
         az = "us-east-1b"
+        igw = true
       }
       app-subnet-1 = {
         cidr_block = "10.0.0.128/26"
         az = "us-east-1a"
+        igw = false
       }
       app-subnet-2 = {
         cidr_block = "10.0.0.192/26"
         az = "us-east-1b"
+        igw = false
       }
       db-subnet-1 = {
         cidr_block = "10.0.0.64/27"
         az = "us-east-1a"
+        igw = false
       }
       db-subnet-2 = {
         cidr_block = "10.0.0.96/27"
         az = "us-east-1b"
+        igw = false
       }
     }
   }

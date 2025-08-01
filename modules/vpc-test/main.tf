@@ -37,6 +37,20 @@ resource "aws_route_table_association" "main" {
   subnet_id = aws_subnet.subnet[each.key].id
 }
 
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+  tags = {
+    Name = "${var.env}-igw"
+  }
+}
+
+resource "aws_route" "igw" {
+  count = length(local.igw_enabled_subnets)
+  route_table_id = aws_route_table.main[local.igw_enabled_subnets[count.index]].id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = aws_internet_gateway.main.id
+}
+
 # resource "aws_vpc_peering_connection" "main" {
 #   peer_vpc_id = var.default_vpc["id"]
 #   vpc_id      = aws_vpc.main.id
